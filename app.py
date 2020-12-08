@@ -8,11 +8,6 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
 
-class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
-
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'app secret key'
@@ -20,8 +15,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-#db.create_all()
+# db.create_all()
 bootstrap = Bootstrap(app)
+
+
+class NameForm(FlaskForm):
+    name = StringField('What is your name?', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 
 class Sport(db.Model):
     __tablename__ = 'sport'
@@ -31,6 +32,7 @@ class Sport(db.Model):
 
     def __repr__(self):
         return '<Sport %r>' % self.name
+
 
 class Game(db.Model):
     __tablename__ = 'game'
@@ -42,6 +44,7 @@ class Game(db.Model):
     def __repr__(self):
         return '<Game %r>' % self.name
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
@@ -52,6 +55,12 @@ def index():
         session['name'] = form.name.data
         return redirect(url_for('index'))
     return render_template('index.html', form=form, name=session.get('name'))
+
+
+@app.route('/sports')
+def sports():
+    s = Sport.query.all()
+    return render_template('sports.html', sports=s)
 
 
 @app.route('/user/<name>')

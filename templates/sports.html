@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}RCPS Sports{% endblock %}
+
+{% block page_content %}
+<div class="list-view">
+    <h1>Sports</h1>
+    <ul>
+        {% for sport in sports %}
+        <li>{{sport.name}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
