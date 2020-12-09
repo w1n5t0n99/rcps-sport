@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -17,7 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 # db.create_all()
 bootstrap = Bootstrap(app)
-
+migrate = Migrate(app, db)
 
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
@@ -43,6 +44,13 @@ class Game(db.Model):
 
     def __repr__(self):
         return '<Game %r>' % self.name
+
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, Sport=Sport, Game=Game)
+
+
 
 
 @app.route('/', methods=['GET', 'POST'])
