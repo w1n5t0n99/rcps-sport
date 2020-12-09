@@ -38,7 +38,7 @@ class Sport(db.Model):
 class Game(db.Model):
     __tablename__ = 'game'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, index=True)
+    name = db.Column(db.String(64), unique=True)
     date = db.Column(db.Date, nullable=False)
     sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
 
@@ -46,11 +46,19 @@ class Game(db.Model):
         return '<Game %r>' % self.name
 
 
+class Guest(db.Model):
+    __tablename__ = 'guest'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    sport_id = db.Column(db.Integer, db.ForeignKey('sport.id'))
+
+    def __repr__(self):
+        return '<Guest %r>' % self.name
+
+
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, Sport=Sport, Game=Game)
-
-
+    return dict(db=db, Sport=Sport, Game=Game, Guest=Guest)
 
 
 @app.route('/', methods=['GET', 'POST'])
