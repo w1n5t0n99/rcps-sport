@@ -16,7 +16,7 @@ def index():
         return redirect(url_for('.index'))
     return render_template('index.html',
                            form=form, name=session.get('name'),
-                           current_time=datetime.utcnow())
+                           current_date=datetime.utcnow())
 
 
 @main.route('/sports')
