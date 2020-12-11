@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for, flash
+from flask_login import login_required
 from . import main
 from .forms import NameForm
 from ..models import Sport
@@ -28,3 +29,5 @@ def sports():
 @main.route('/user/<name>')
 def user(name):
     return render_template('user.html', name=name)
+
+
