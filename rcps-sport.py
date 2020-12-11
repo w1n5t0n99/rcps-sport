@@ -1,6 +1,6 @@
 import os
 from app import create_app, db
-from app.models import Game, Sport, Guest
+from app.models import Game, Sport, Guest, Role, User
 from flask_migrate import Migrate
 
 
@@ -10,7 +10,7 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, Sport=Sport, Game=Game, Guest=Guest)
+    return dict(db=db, Sport=Sport, Game=Game, Guest=Guest, Role=Role, User=User)
 
 
 @app.cli.command()
